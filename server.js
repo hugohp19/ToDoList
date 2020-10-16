@@ -28,6 +28,30 @@ app.get("/", (req, res) => {
     res.status(200).send("TO DO App");
 });
 
+// this route will return all of the todo items
+const items = [];
+let id = 0;
+
+app.get("/api/items", (req, res, next) => {
+    res.json(items);
+});
+
+// this route will create a new todo item
+app.post('/api/items', (req, res, next) => {
+  console.log('req.body', req.body);
+  if (req.body.item) {
+	id = id + 1;
+    const newItem = {
+	    id: id,
+	    item: req.body.item,
+        completed: false
+    };
+    items.push(newItem);
+    res.json(newItem);
+  } else {
+    res.status(400).json({error: "item needs a description"});
+  }
+});
 /**
  * Server Activation
  */
